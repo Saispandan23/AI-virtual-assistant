@@ -1,0 +1,179 @@
+import speech_recognition as sr
+import pyttsx3
+import pywhatkit
+import datetime
+import wikipedia
+import webbrowser
+import pywhatkit as kit
+import os
+import subprocess as sp
+#import pyjokes
+
+recognizer = sr.Recognizer()
+engine = pyttsx3.init()
+voices = engine.getProperty('voices')
+engine.setProperty('voice', voices[0].id)
+
+
+def speak(text):
+    engine.say(text)
+    engine.runAndWait()
+
+def wishMe():
+    hour=int(datetime.datetime.now().hour)
+    if hour>=0 and hour<12:
+        speak("Good Morning")
+    elif hour>=12 and hour<18:
+        speak("Good Afternoon")
+    else:
+        speak("Good Evening")
+    speak("I am Jarvis.How may I help you Sir?")
+    
+    
+def takeCommand():
+    r=sr.Recognizer()
+    with sr.Microphone() as source:
+        print("Listening...")
+        r.pause_threshold==1
+        audio=r.listen(source)
+    try:
+        print("Recognizing...")
+        command=r.recognize_google(audio,language='en-in')
+        print(f"User said: {command}\n")
+            #command = command.lower()
+            
+        '''if 'jarvis' in command:
+            command = command.replace('jarvis', '')
+            print(command)'''
+                
+    except Exception as e:
+        #print(e)
+        print("Say that again please...")    
+        return "None"
+    return command
+
+wishMe()
+
+
+
+if _name=="main_":
+
+   while True:
+        #def run_alexa():
+            #speak("what can i do for you?")
+            command = takeCommand().lower()
+            #print(command)
+            if command==0:
+                continue
+
+            if 'who are you' in command or 'tell me yourself' in command or 'introduce yourself' in command:
+                speak(f"I'm JARVIS a virtual artificial intelligence. I'm here to assist you with a variety of tasks as best I can. ,JARVIS stands for Just A Rather Very Intelligent System ")
+                
+            elif 'how are you' in command:
+                speak(f"I'm fine. What about u?")
+                
+            elif 'i am good' in command or 'i am fine' in command:
+                speak(f"That's great!! How may I help you sir?") 
+                
+            elif "good bye" in command or "ok bye" in command or "turn off" in command:
+                speak ('Shutting down,Have a good day Sir!!!')
+                break
+            
+            elif 'time' in command:
+                time = datetime.datetime.now().strftime('%I:%M %p')
+                speak('Current time is ' + time)
+                print(time)
+                
+            elif 'who is' in command or 'what is' in command:
+                person = command.replace('who is', '')
+                info = wikipedia.summary(person, 1)
+                print(info)
+                speak(info)
+                
+            elif 'date' in command:
+                speak('sorry, I have a headache')
+                
+            elif 'are you single' in command:
+                speak('I am in a relationship with wifi')
+                
+                    
+            if 'wikipedia' in command:
+                speak('What do you want to search on Wikipedia, sir?')
+                search_query = takeCommand().lower()
+                #statement =statement.replace("wikipedia", "")
+                results = wikipedia.summary(search_query, sentences=2)
+                speak(f"According to Wikipedia, {results}")
+                speak("For your convenience, I am printing it on the screen sir.")
+                print(results)
+
+            elif 'open youtube' in command:
+                speak('What do you want to search on Youtube, sir?')
+                video = takeCommand().lower()
+                kit.playonyt(video)
+                speak("YouTube is open now")
+                
+                
+            elif 'open google' in command:
+                speak('What do you want to search on google, sir?')
+                google_search = takeCommand().lower()
+                kit.search(google_search)
+                speak("Google is open now")
+                #time.sleep(5)
+
+            elif 'open gmail' in command:
+                webbrowser.open_new_tab("gmail.com")
+                speak("Google Mail is open now")
+                #time.sleep(5)
+                
+            elif "send whatsapp message" in command:
+                speak('On what number should I send the message sir? Please enter in the console: ')
+                number = input("Enter the number: ")
+                speak("What is the message sir?")
+                message = takeCommand().lower()
+                kit.sendwhatmsg_instantly(f"+91{number}", message)
+                speak("I've sent the message sir.")
+                
+            elif 'play' in command:
+                song = command.replace('play', '')
+                speak('playing ' + song)
+                pywhatkit.playonyt(song)
+                    
+            #elif 'joke' in command:
+                #speak(pyjokes.get_joke())
+            
+            
+            elif 'thank you' in command or 'well done' in command:
+                speak(f"It's my pleasure Sir")
+                
+            elif 'idiot' in command or 'stupid' in command:
+                speak(f"Sorry for my inconvenience sir...")
+                
+            elif 'genius' in command or 'smart' in command or 'good' in command:
+                speak(f"Thank u sir")
+                
+            elif 'sorry' in command:
+                speak(f"Never mind sir")
+                
+            #else:
+                #speak('Please say the command again.')
+
+            if 'open notepad' in command:
+                notepad='C:\\Windows\\Notepad'
+                os.startfile(os.path.join[notepad])
+
+            elif 'open command prompt' in command or 'open cmd' in command:
+                cmd='C:\\Windows\\system32\\Command Prompt'
+                os.startfile(os.path.join[cmd])
+
+            elif 'open camera' in command:
+                sp.run('start microsoft.windows.camera:', shell=True)
+                speak("Camera is opened")
+
+            elif 'open calculator' in command:
+                sp.Popen( "C:\\Windows\\System32\\calc.exe")
+                speak("Calculator is opened")
+                
+       
+
+        #while True:
+            #run_alexa()
